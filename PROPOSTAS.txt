@@ -1,0 +1,11 @@
+ Começar ✅ 
+ Criar o servidor.
+ Fazer o cliente se conectar ao servidor.
+ Criar salas.
+ Entrar em salas.
+ Atualizar o lobby em tempo real.
+ Enviar palavras.
+ Iniciar a partida.
+ Distribuir a palavra e o impostor.
+ Implementar a votação.
+ Mostrar o resultado.

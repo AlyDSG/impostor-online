@@ -1,0 +1,36 @@
+Abrir App
+     │
+     ▼
+Digite Nick
+     │
+     ▼
+Criar Sala ou Entrar
+     │
+     ▼
+Lobby
+     │
+     ▼
+Todos entram
+     │
+     ▼
+Cada jogador envia uma palavra
+     │
+     ▼
+Todos enviaram
+     │
+     ▼
+Host inicia
+     │
+     ▼
+Servidor sorteia:
+- Palavra
+- Impostor
+     │
+     ▼
+Partida
+     │
+     ▼
+Votação
+     │
+     ▼
+Resultado
