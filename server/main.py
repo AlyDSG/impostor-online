@@ -1,15 +1,11 @@
 from fastapi import FastAPI
 from salas import salas, gerar_codigo
-from pydantic import BaseModel
 from models import EntrarSalaRequest
 
 
 
-class EntrarSalaRequest(BaseModel):
-    codigo: str
-    nick: str
-
 app = FastAPI()
+
 
 @app.get("/")
 def home():
