@@ -12,40 +12,47 @@ class TelaInicial(MDScreen):
     def entrar_sala_tela_inicial(self, instance):
 
         app = App.get_running_app()
+
         app.nick = self.campo_nick.text
         app.codigo_sala = self.campo_codigo.text
-        
 
         if not app.nick.strip():
             print("Digite um nick!")
             return
-        
+
         resultado = entrar_sala(app.codigo_sala, app.nick)
+
         if resultado["sucesso"] == True:
             self.manager.current = "lobby"
         else:
             print(resultado["erro"])
 
+
     def criar_sala_tela_inicial(self, instance):
 
-        dados = criar_sala()
-
         app = App.get_running_app()
-        app.codigo_sala = dados["codigo"]
+
         app.nick = self.campo_nick.text
 
-        self.label_codigo.text = f"Sala: {dados['codigo']}"
         if not app.nick.strip():
             print("Digite um nick!")
             return
-        
+
+        dados = criar_sala(app.nick)
+
+        app.codigo_sala = dados["codigo"]
+
+        self.label_codigo.text = f"Sala: {dados['codigo']}"
+
         resultado = entrar_sala(app.codigo_sala, app.nick)
+
         print(resultado)
 
         self.manager.current = "lobby"
 
 
     def __init__(self, **kwargs):
+
         super().__init__(**kwargs)
 
         layout = BoxLayout(
@@ -57,10 +64,11 @@ class TelaInicial(MDScreen):
         self.campo_nick = MDTextField(
             hint_text="Seu nick"
         )
+
         self.campo_codigo = MDTextField(
             hint_text="Codigo da sala"
         )
-        
+
         layout.add_widget(self.campo_codigo)
         layout.add_widget(self.campo_nick)
 
@@ -79,6 +87,7 @@ class TelaInicial(MDScreen):
             on_release=self.entrar_sala_tela_inicial
         )
 
+
         self.label_codigo = Label(
             text="Impostor Online",
             size_hint=(1, None),
@@ -87,8 +96,10 @@ class TelaInicial(MDScreen):
             color=(0, 0, 0, 1)
         )
 
+
         layout.add_widget(botao)
         layout.add_widget(bota_entrada)
         layout.add_widget(self.label_codigo)
 
         self.add_widget(layout)
+

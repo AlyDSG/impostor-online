@@ -31,7 +31,13 @@ class Lobby(MDScreen):
 
         layout.add_widget(botao_sair)
 
-        
+        self.botao_iniciar = MDRaisedButton(
+            text="INICIAR JOGO"
+        )
+
+        self.botao_iniciar.opacity = 0
+        layout.add_widget(self.botao_iniciar)        
+
 
     def on_enter(self):
         app = App.get_running_app()
@@ -52,13 +58,21 @@ class Lobby(MDScreen):
         app = App.get_running_app()
 
         jogadores = listar_jogadores(app.codigo_sala)
+        host = jogadores["host"]
+        sou_host = app.nick == host
 
+        if sou_host:
+            self.botao_iniciar.opacity = 1
+        else:
+            self.botao_iniciar.opacity = 0
+        
         nomes = ""
 
         for jogador in jogadores["jogadores"]:
             nomes += jogador["nick"] + "\n"
 
         self.texto.text = f"LOBBY: {app.codigo_sala}\n\nJOGADORES:\n{nomes}"
+
 
     def on_leave(self):
         Clock.unschedule(self.timer_jogadores)

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from salas import salas, gerar_codigo
-from models import EntrarSalaRequest
+from models import EntrarSalaRequest, CriarSalaRequest
 
 
 
@@ -13,13 +13,17 @@ def home():
 
 
 @app.post("/criar-sala")
-def criar_sala():
+def criar_sala(dados: CriarSalaRequest):
+    host = dados.nick
     codigo = gerar_codigo()
     salas[codigo] = {
-        "jogadores": []
+        "jogadores": [],
+        "host":host
     }
+    
     return {
-        "codigo": codigo
+        "codigo": codigo,
+        "host":host
     }
 
 @app.post("/entrar-sala")
@@ -64,7 +68,9 @@ def listar_jogadores(codigo: str):
         return {
             "erro": "Sala não encontrada."
         }
+    
 
     return {
-        "jogadores": salas[codigo]["jogadores"]
+        "jogadores": salas[codigo]["jogadores"],
+        "host": salas[codigo]["host"] 
     }
