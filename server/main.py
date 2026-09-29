@@ -27,23 +27,34 @@ def entrar_sala(dados: EntrarSalaRequest):
 
     if dados.codigo not in salas:
         return {
-            "erro": "Sala não encontrada."
-        }
-
+                    "sucesso": False,
+                    "erro": "Sala não existe."
+                }
+    
     jogadores = salas[dados.codigo]["jogadores"]
 
     for jogador in jogadores:
         if jogador["nick"] == dados.nick:
             return {
-                "erro": "Já existe um jogador com esse nick."
-            }
+            "sucesso": False,
+            "erro": "Nick Já utilizado."
+        }
+
+    if not dados.nick.strip():
+        return {
+            "sucesso": False,
+            "erro": "Nick não pode ficar vazio."
+        }
+    
     jogadores.append({
     "nick": dados.nick
 })
 
     return {
-    "mensagem": "Jogador entrou na sala!"
-}
+                "sucesso": True,
+                "erro": "Jogador entrou!."
+            }
+
 
 
 @app.get("/jogadores/{codigo}")
