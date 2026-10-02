@@ -8,3 +8,7 @@ class EntrarSalaRequest(BaseModel):
 
 class CriarSalaRequest(BaseModel):
     nick: str
+
+class SairSalaRequest(BaseModel):
+    codigo: str
+    nick: str

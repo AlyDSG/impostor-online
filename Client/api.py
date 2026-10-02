@@ -32,3 +32,13 @@ def entrar_sala(codigo, nick):
     )
 
     return resposta.json()
+
+def sairsala(codigo, nick):
+    resposta = requests.post(
+            f"{URL}/sair-sala",
+            json={
+                "codigo": codigo,
+                "nick": nick
+            }
+        )
+    return resposta.json()

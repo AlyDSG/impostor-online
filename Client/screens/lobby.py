@@ -2,9 +2,10 @@ from kivymd.uix.screen import MDScreen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.app import App
-from api import listar_jogadores
+from api import listar_jogadores, sairsala
 from kivy.clock import Clock
 from kivymd.uix.button import MDRaisedButton
+
 
 class Lobby(MDScreen):
 
@@ -78,4 +79,7 @@ class Lobby(MDScreen):
         Clock.unschedule(self.timer_jogadores)
 
     def sair_lobby(self, instance):
-                self.manager.current = "tela_inicial"
+
+        app = App.get_running_app()
+        resultado = sairsala(app.codigo_sala, app.nick)
+        self.manager.current = "tela_inicial"

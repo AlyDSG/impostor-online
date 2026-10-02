@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from salas import salas, gerar_codigo
-from models import EntrarSalaRequest, CriarSalaRequest
+from models import EntrarSalaRequest, CriarSalaRequest, SairSalaRequest
 
 
 
@@ -73,4 +73,33 @@ def listar_jogadores(codigo: str):
     return {
         "jogadores": salas[codigo]["jogadores"],
         "host": salas[codigo]["host"] 
+    }
+
+@app.post("/sair-sala")
+def sair_lobby(dados: SairSalaRequest):
+
+    if dados.codigo not in salas:
+        return {
+            "sucesso": False,
+            "erro": "Sala não existe."
+        }
+
+    jogadores = salas[dados.codigo]["jogadores"]
+    host = salas[dados.codigo]["host"]
+
+    for jogador in jogadores:
+        if jogador["nick"] == dados.nick:
+            jogadores.remove(jogador)
+
+            if jogador["nick"] == host:
+                if jogadores:
+                    salas[dados.codigo]["host"] = jogadores[0]["nick"]
+
+            return {
+                "sucesso": True
+            }
+
+    return {
+        "sucesso": False,
+        "erro": "Jogador não está na sala."
     }
