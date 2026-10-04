@@ -7,12 +7,8 @@ URL = "http://127.0.0.1:8000"
 def criar_sala(nick):
     resposta = requests.post(
         f"{URL}/criar-sala",
-        json={
-            "nick": nick
-        }
+        json={"nick": nick}
     )
-
-  
     return resposta.json()
 
 
@@ -52,4 +48,17 @@ def iniciar_jogo(codigo,nick):
                     "nick": nick
                 }
             )
+    return resposta.json()
+
+
+def enviar_palavra_api(codigo, nick, palavra):
+    resposta = requests.post(
+        f"{URL}/enviar-palavra",
+        json={
+            "codigo": codigo,
+            "nick": nick,
+            "palavra": palavra
+        }
+    )
+
     return resposta.json()
