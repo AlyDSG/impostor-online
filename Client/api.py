@@ -42,3 +42,14 @@ def sairsala(codigo, nick):
             }
         )
     return resposta.json()
+
+
+def iniciar_jogo(codigo,nick):
+    resposta = requests.post(
+                f"{URL}/iniciar-jogo",
+                json={
+                    "codigo": codigo,
+                    "nick": nick
+                }
+            )
+    return resposta.json()

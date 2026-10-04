@@ -2,7 +2,7 @@ from kivymd.uix.screen import MDScreen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.app import App
-from api import listar_jogadores, sairsala
+from api import listar_jogadores, sairsala, iniciar_jogo
 from kivy.clock import Clock
 from kivymd.uix.button import MDRaisedButton
 
@@ -33,7 +33,8 @@ class Lobby(MDScreen):
         layout.add_widget(botao_sair)
 
         self.botao_iniciar = MDRaisedButton(
-            text="INICIAR JOGO"
+            text="INICIAR JOGO",
+            on_release=self.iniciar_jogo
         )
 
         self.botao_iniciar.opacity = 0
@@ -57,11 +58,13 @@ class Lobby(MDScreen):
         )
     def atualizar_jogadores(self, intervalo):
         app = App.get_running_app()
-
         jogadores = listar_jogadores(app.codigo_sala)
+        estado = jogadores["estado"]
+        if estado == "jogo":
+            self.manager.current = "jogo"
         host = jogadores["host"]
         sou_host = app.nick == host
-
+        
         if sou_host:
             self.botao_iniciar.opacity = 1
         else:
@@ -73,7 +76,9 @@ class Lobby(MDScreen):
             nomes += jogador["nick"] + "\n"
 
         self.texto.text = f"LOBBY: {app.codigo_sala}\n\nJOGADORES:\n{nomes}"
-
+        
+        
+        
 
     def on_leave(self):
         Clock.unschedule(self.timer_jogadores)
@@ -83,3 +88,9 @@ class Lobby(MDScreen):
         app = App.get_running_app()
         resultado = sairsala(app.codigo_sala, app.nick)
         self.manager.current = "tela_inicial"
+
+    def iniciar_jogo(self, instance):
+        app = App.get_running_app()
+        resultado = iniciar_jogo(app.codigo_sala, app.nick)
+        if resultado["sucesso"]:
+            self.manager.current = "jogo"

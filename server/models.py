@@ -12,3 +12,7 @@ class CriarSalaRequest(BaseModel):
 class SairSalaRequest(BaseModel):
     codigo: str
     nick: str
+
+class IniciarJogoRequest(BaseModel):
+    codigo: str
+    nick: str
