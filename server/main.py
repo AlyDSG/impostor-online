@@ -187,7 +187,7 @@ def enviar_palavra(dados: EnviarPalavraRequest):
         palavra_escolhida = random.choice(palavras)
         salas[dados.codigo]["palavra"] = palavra_escolhida
         jogador_escolhido = random.choice(jogadores)
-        salas[dados.codigo]["impostor"] = jogador_escolhido["nick"]
+        salas[dados.codigo]["impostor"] = jogador_escolhido
 
         if dados.nick == salas[dados.codigo]["impostor"]["nick"]:
             informacao = "IMPOSTOR"
