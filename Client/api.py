@@ -62,3 +62,14 @@ def enviar_palavra_api(codigo, nick, palavra):
     )
 
     return resposta.json()
+
+
+def resultado_api(codigo, nick):
+    resposta = requests.get(
+        f"{URL}/resultado/{codigo}/{nick}"
+    )
+
+    print(resposta.status_code)
+    print(resposta.text)
+
+    return resposta.json()

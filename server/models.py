@@ -16,3 +16,9 @@ class SairSalaRequest(BaseModel):
 class IniciarJogoRequest(BaseModel):
     codigo: str
     nick: str
+
+class EnviarPalavraRequest(BaseModel):
+    codigo: str
+    nick: str
+    palavra: str
+

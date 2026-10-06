@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from salas import salas, gerar_codigo
-from models import EntrarSalaRequest, CriarSalaRequest, SairSalaRequest, IniciarJogoRequest
+from models import EntrarSalaRequest, CriarSalaRequest, SairSalaRequest, IniciarJogoRequest, EnviarPalavraRequest
+import random
 
 #salas[dados.codigo] -> todas as salas
 #salas["ABC123"] - > {
@@ -161,3 +162,66 @@ def iniciar_jogo(dados: IniciarJogoRequest):
         "sucesso": True,
         "estado": "jogo"
     }
+
+
+@app.post("/enviar-palavra")
+def enviar_palavra(dados: EnviarPalavraRequest):
+#{"nick": "Alysson", "palavra": "banana"}
+    jogadores = salas[dados.codigo]["jogadores"]
+    todos_enviaram = True
+
+    for jogador in jogadores:
+        if jogador["nick"] == dados.nick:
+            jogador["palavra"] = dados.palavra
+
+    for jogador in jogadores:
+        if "palavra" not in jogador:
+            todos_enviaram = False
+
+    if todos_enviaram is True:
+        palavras = []
+
+        for jogador in jogadores:
+            palavras.append(jogador["palavra"])
+
+        palavra_escolhida = random.choice(palavras)
+        salas[dados.codigo]["palavra"] = palavra_escolhida
+        jogador_escolhido = random.choice(jogadores)
+        salas[dados.codigo]["impostor"] = jogador_escolhido
+
+        if dados.nick == salas[dados.codigo]["impostor"]["nick"]:
+            informacao = "IMPOSTOR"
+        else:
+            informacao = salas[dados.codigo]["palavra"]
+
+        for jogador in jogadores:
+            if jogador["nick"] == salas[dados.codigo]["impostor"]["nick"]:
+                jogador["resultado"] = "IMPOSTOR"
+            else:
+                jogador["resultado"] = salas[dados.codigo]["palavra"]
+
+        return {
+            "sucesso": True,
+            "todos_enviaram": todos_enviaram,
+            "resultado": informacao
+        }
+    return{
+        "sucesso": True,
+        "todos_enviaram": todos_enviaram
+    }
+
+@app.get("/resultado/{codigo}/{nick}")
+def resultado(codigo: str, nick: str):
+    jogadores = salas[codigo]["jogadores"]
+
+    for jogador in jogadores:
+        if jogador["nick"] == nick:
+            if "resultado" in jogador:
+                return{
+                    "sucesso": True,
+                    "resultado": jogador["resultado"]
+                }
+            else:
+                return {
+                    "sucesso": False
+                }
